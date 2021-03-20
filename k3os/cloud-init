@@ -1,0 +1,23 @@
+#cloud-config
+# https://truebrain.nl/k3os/cloud-init
+
+ssh_authorized_keys:
+- github:TrueBrain
+hostname: clusterbrain
+
+write_files:
+- content: |-
+    /dev/xvdb1      /persistent     ext4    defaults  0 0
+  owner: root
+  path: /etc/fstab
+  permissions: '0644'
+boot_cmd:
+- "mkdir -p /persistent"
+
+k3os:
+  dns_nameservers:
+  - 1.1.1.1
+  password: rancher
+  k3s_args:
+  - server
+  - "--no-deploy=traefik,servicelb"
